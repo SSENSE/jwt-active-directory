@@ -25,6 +25,10 @@
     "Active Directory"
   ],
   "author": "Mathieu Doyon <mathieu.doyon@ssense.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SSENSE/jwt-active-directory/issues"
+  },
   "devDependencies": {
     "@ssense/tslint-config": "^4.0.0",
     "@types/mocha": "^2.2.35",
