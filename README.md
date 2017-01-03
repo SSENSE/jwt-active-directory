@@ -3,7 +3,7 @@
 **Authorization Middleware and Authenticator for Active Directory and JWT token**
 
 [![Build Status](https://travis-ci.org/SSENSE/jwt-active-directory.svg?branch=master)](https://travis-ci.org/SSENSE/jwt-active-directory)
-[![Coverage Status](https://coveralls.io/repos/github/SSENSE/jwt-active-directory/badge.svg?branch=master)](https://coveralls.io/github/SSENSE/jwt-active-directory?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/SSENSE/jwt-active-directory/badge.svg)](https://coveralls.io/github/SSENSE/jwt-active-directory)
 [![Latest Stable Version](https://img.shields.io/npm/v/@ssense/jwt-active-directory.svg)](https://www.npmjs.com/package/@ssense/jwt-active-directory)
 [![Known Vulnerabilities](https://snyk.io/test/npm/@ssense/jwt-active-directory/badge.svg)](https://snyk.io/test/npm/@ssense/jwt-active-directory)
 
