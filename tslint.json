@@ -1,0 +1,20 @@
+{
+  "extends": "@ssense/tslint-config",
+  "rules": {
+    "no-backbone-get-set-outside-model": false,
+    "no-empty-interfaces": false,
+    "import-name": false,
+    "no-require-imports": false,
+    "typedef" : false,
+    "max-line-length": false,
+    "no-stateless-class": false,
+    "no-any": false,
+    "max-func-body-length": false,
+    "no-increment-decrement": false,
+    "one-variable-per-declaration": false,
+    "no-constructor-vars": false,
+    "function-name": [true, {
+      "static-method-regex": "^[a-z][\\w\\d]+$"
+    }]
+  }
+}

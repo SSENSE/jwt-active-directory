@@ -1,0 +1,14 @@
+{
+  "extends": "@ssense/tslint-config",
+  "rules": {
+    "no-backbone-get-set-outside-model": false,
+    "no-invalid-this": false,
+    "no-require-imports": false,
+    "no-any": false,
+    "no-regex-spaces": false,
+    "max-line-length": false,
+    "max-func-body-length": false,
+    "no-http-string": false,
+    "no-stateless-class": false
+  }
+}

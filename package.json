@@ -1,0 +1,65 @@
+{
+  "name": "@ssense/jwt-activedirectory",
+  "version": "0.1.0",
+  "description": "Ssense JWT Active Directory Authenticator",
+  "main": "./dist/index.js",
+  "typings": "./dist/index",
+  "scripts": {
+    "lint": "tslint --format verbose './ts/**/*.ts' './tests/**/*.ts' ",
+    "compile": "rm -rf dist/* && tsc",
+    "test": "NODE_ENV=test npm run test:unit",
+    "test:unit": "NODE_ENV=test mocha tests/unit --recursive --compilers ts:ts-node/register --bail",
+    "cover": "./node_modules/.bin/nyc --report-dir tests/coverage/ npm run test",
+    "coveralls": "cat tests/coverage/lcov.info | ./node_modules/.bin/coveralls"
+  },
+  "keywords": [
+    "Ssense",
+    "console",
+    "jwt",
+    "json web token",
+    "authenticator",
+    "Active Directory"
+  ],
+  "author": "Mathieu Doyon <mathieu.doyon@ssense.com>",
+  "devDependencies": {
+    "@ssense/tslint-config": "^4.0.0",
+    "@types/mocha": "^2.2.35",
+    "@types/node": "^6.0.54",
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
+    "ldapjs": "^1.0.1",
+    "mocha": "^3.2.0",
+    "nock": "^9.0.2",
+    "node-mocks-http": "^1.5.5",
+    "nyc": "^10.0.0",
+    "ts-node": "^1.7.3",
+    "tslint": "^4.2.0",
+    "typescript": "^2.1.4",
+    "winston": "^2.3.0"
+  },
+  "dependencies": {
+    "activedirectory": "^0.7.2",
+    "jsonwebtoken": "^7.2.1"
+  },
+  "nyc": {
+    "include": [
+      "ts/*.ts"
+    ],
+    "exclude": [
+      "node_modules",
+      "ts/index.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html",
+      "text-summary",
+      "lcov"
+    ]
+  }
+}

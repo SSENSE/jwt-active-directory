@@ -1,0 +1,20 @@
+language: node_js
+
+node_js:
+  - '6'
+
+script: npm run cover
+
+after_script:
+  - cat ./tests/coverage/lcov.info | ./node_modules/.bin/coveralls
+
+before_deploy: npm run compile
+deploy:
+  provider: npm
+  skip_cleanup: true
+  on:
+    tags: true
+    node: '6'
+  email: adminlogin@ssense.com
+  api_key:
+    secure:
