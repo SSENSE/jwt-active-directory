@@ -12,6 +12,10 @@
     "cover": "./node_modules/.bin/nyc --report-dir tests/coverage/ npm run test",
     "coveralls": "cat tests/coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/SSENSE/jwt-active-directory.git"
+  },
   "keywords": [
     "Ssense",
     "console",
