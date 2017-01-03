@@ -1,6 +1,6 @@
 {
-  "name": "@ssense/jwt-activedirectory",
-  "version": "0.1.0",
+  "name": "@ssense/jwt-active-directory",
+  "version": "0.2.0",
   "description": "Ssense JWT Active Directory Authenticator",
   "main": "./dist/index.js",
   "typings": "./dist/index",

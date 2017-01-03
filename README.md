@@ -1,11 +1,11 @@
 # JWT - Active Directory
 
-**Authorization Middleware for SSENSE MS-CONSOLE**
+**Authorization Middleware and Authenticator for Active Directory and JWT token**
 
-[![Build Status](https://travis-ci.org/SSENSE/jwt-activedirectory.svg?branch=master)](https://travis-ci.org/SSENSE/jwt-activedirectory)
-[![Coverage Status](https://coveralls.io/repos/github/SSENSE/jwt-activedirectory/badge.svg?branch=master)](https://coveralls.io/github/SSENSE/jwt-activedirectory?branch=master)
-[![Latest Stable Version](https://img.shields.io/npm/v/@ssense/jwt-activedirectory.svg)](https://www.npmjs.com/package/@ssense/jwt-activedirectory)
-[![Known Vulnerabilities](https://snyk.io/test/npm/@ssense/jwt-activedirectory/badge.svg)](https://snyk.io/test/npm/@ssense/jwt-activedirectory)
+[![Build Status](https://travis-ci.org/SSENSE/jwt-active-directory.svg?branch=master)](https://travis-ci.org/SSENSE/jwt-active-directory)
+[![Coverage Status](https://coveralls.io/repos/github/SSENSE/jwt-active-directory/badge.svg?branch=master)](https://coveralls.io/github/SSENSE/jwt-active-directory?branch=master)
+[![Latest Stable Version](https://img.shields.io/npm/v/@ssense/jwt-active-directory.svg)](https://www.npmjs.com/package/@ssense/jwt-active-directory)
+[![Known Vulnerabilities](https://snyk.io/test/npm/@ssense/jwt-active-directory/badge.svg)](https://snyk.io/test/npm/@ssense/jwt-active-directory)
 
 ## Table of Contents
 - [Installation](#installation)
@@ -28,7 +28,7 @@ There are four ways to pass the token for validation: (1) in the `Authorization`
 ### Installation
 
 ```bash
-npm install --save @ssense/jwt-activedirectory
+npm install --save @ssense/jwt-active-directory
 ```
 
 ### Constructing a token
@@ -90,7 +90,7 @@ authenticator.authenticateAndSign('user@domain.com', 'password', 'no-so-secret-k
 ### Using middleware to validate token
 
 ```js
-import {authenticated} from 'jwt-activedirectory';
+import {authenticated} from 'jwt-active-directory';
 
 // ... your code ...
 
