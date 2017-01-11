@@ -395,4 +395,30 @@ describe('Authenticated middleware', () => {
             done();
         });
     });
+
+    it('Should allow all valid token if wildcard * is set', (done) => {
+        const jwtKey: string = 'no-so-secret-key';
+        const allowed: string[] = ['*'];
+        const groups: ActiveDirectoryGroups = [<ActiveDirectoryGroup> { cn: 'Test' }];
+        const token: string = jwt.sign({groups}, jwtKey, {expiresIn: '1 hour'});
+
+        const req = createRequest({
+            cookies: {
+                jwt_token: token
+            }
+        });
+        const res = createResponse();
+        const auth = authenticated(<AuthenticatedOptions> {
+            allowed,
+            jwtKey,
+            reqKey: 'myCustomToken',
+            handleError: false
+        });
+
+        auth(req, res, () => {
+            expect(res.statusCode).to.equal(200);
+            expect(req.myCustomToken).to.equal(token);
+            done();
+        });
+    });
 });

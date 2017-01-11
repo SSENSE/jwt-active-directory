@@ -74,7 +74,15 @@ export function authenticated (options?: AuthenticatedOptions) {
         // Validate jwt token
         try {
             const decoded = jwt.verify(token, options.jwtKey);
-            const filtered = <ActiveDirectoryGroups> (decoded.groups || [])
+            const groups: ActiveDirectoryGroups = decoded.groups || [];
+            // if allowed all
+            if (options.allowed.indexOf('*') >= 0) {
+                groups.push(<ActiveDirectoryGroup> {
+                    [options.validateGroupKey]: '*'
+                });
+            }
+
+            const filtered = groups
                 .filter((group: ActiveDirectoryGroup) => { return options.allowed.includes(group[options.validateGroupKey]); })
                 .map((group: ActiveDirectoryGroup) => { return group.cn; }); // convert objects to strings
 
