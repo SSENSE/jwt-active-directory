@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import {createRequest, createResponse} from 'node-mocks-http';
 import * as jwt from 'jsonwebtoken';
 import {authenticated, AuthenticatedOptions, ActiveDirectoryGroups, ActiveDirectoryGroup} from '../../ts';
+import {JWTUndefinedError, RFC6750Error, UnauthorizedError} from '../../ts/exceptions';
 
 describe('Authenticated middleware', () => {
     it('should failed if jwtKey is not specified', (done) => {
@@ -14,6 +15,7 @@ describe('Authenticated middleware', () => {
         });
 
         auth(req, res, (err) => {
+            expect(err.constructor.name).to.equal(JWTUndefinedError.name);
             expect(err.message).to.equal('JWT secret key undefined');
             done();
         });
@@ -33,6 +35,7 @@ describe('Authenticated middleware', () => {
         });
 
         auth(req, res, (err) => {
+            expect(err.constructor.name).to.equal(jwt.JsonWebTokenError.name);
             expect(err.message).to.equal('jwt malformed');
             done();
         });
@@ -56,6 +59,7 @@ describe('Authenticated middleware', () => {
 
         auth(req, res, (err) => {
             expect(res.statusCode).to.equal(401);
+            expect(err.constructor.name).to.equal(UnauthorizedError.name);
             expect(err.message).to.equal('Unauthorized');
             done();
         });
@@ -81,6 +85,7 @@ describe('Authenticated middleware', () => {
 
         auth(req, res, (err) => {
             expect(res.statusCode).to.equal(401);
+            expect(err.constructor.name).to.equal(UnauthorizedError.name);
             expect(err.message).to.equal('Unauthorized');
             done();
         });
@@ -184,6 +189,7 @@ describe('Authenticated middleware', () => {
 
         auth(req, res, (err) => {
             expect(res.statusCode).to.equal(400);
+            expect(err.constructor.name).to.equal(RFC6750Error.name);
             expect(err.message).to.equal('RFC6750 The "token" attribute MUST NOT appear more than once');
             done();
         });
@@ -212,6 +218,7 @@ describe('Authenticated middleware', () => {
 
         auth(req, res, (err) => {
             expect(res.statusCode).to.equal(400);
+            expect(err.constructor.name).to.equal(RFC6750Error.name);
             expect(err.message).to.equal('RFC6750 The "token" attribute MUST NOT appear more than once');
             done();
         });
@@ -286,6 +293,7 @@ describe('Authenticated middleware', () => {
 
         auth(req, res, (err) => {
             expect(res.statusCode).to.equal(400);
+            expect(err.constructor.name).to.equal(RFC6750Error.name);
             expect(err.message).to.equal('Authorization Bearer header could not be splitted');
             done();
         });
@@ -339,6 +347,7 @@ describe('Authenticated middleware', () => {
 
         auth(req, res, (err) => {
             expect(res.statusCode).to.equal(400);
+            expect(err.constructor.name).to.equal(RFC6750Error.name);
             expect(err.message).to.equal('RFC6750 The "token" attribute MUST NOT appear more than once');
             done();
         });

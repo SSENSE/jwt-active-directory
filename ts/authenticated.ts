@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import {AuthenticatedOptions, ActiveDirectoryGroups, ActiveDirectoryGroup} from './types';
+import {JWTUndefinedError, RFC6750Error, UnauthorizedError} from './exceptions';
 
 export function authenticated (options?: AuthenticatedOptions) {
     options = <AuthenticatedOptions>Object.assign({}, {
@@ -19,7 +20,7 @@ export function authenticated (options?: AuthenticatedOptions) {
         let error: Error;
 
         if (!options.jwtKey) {
-            error = new Error('JWT secret key undefined');
+            error = new JWTUndefinedError('JWT secret key undefined');
         }
 
         if (req.query && req.query[options.queryKey]) {
@@ -28,7 +29,7 @@ export function authenticated (options?: AuthenticatedOptions) {
 
         if (req.body && req.body[options.bodyKey]) {
             if (token) {
-                error = new Error('RFC6750 The "token" attribute MUST NOT appear more than once');
+                error = new RFC6750Error('RFC6750 The "token" attribute MUST NOT appear more than once');
             }
 
             token = req.body[options.bodyKey];
@@ -36,7 +37,7 @@ export function authenticated (options?: AuthenticatedOptions) {
 
         if (req.cookies && req.cookies[options.cookieKey]) {
             if (token) {
-                error = new Error('RFC6750 The "token" attribute MUST NOT appear more than once');
+                error = new RFC6750Error('RFC6750 The "token" attribute MUST NOT appear more than once');
             }
 
             token = req.cookies[options.cookieKey];
@@ -47,12 +48,12 @@ export function authenticated (options?: AuthenticatedOptions) {
 
             if (parts.length === 2 && parts[0] === options.headerKey) {
                 if (token) {
-                    error = new Error('RFC6750 The "token" attribute MUST NOT appear more than once');
+                    error = new RFC6750Error('RFC6750 The "token" attribute MUST NOT appear more than once');
                 }
 
                 token = parts[1];
             } else {
-                error = new Error('Authorization Bearer header could not be splitted');
+                error = new RFC6750Error('Authorization Bearer header could not be splitted');
             }
         }
 
@@ -87,7 +88,7 @@ export function authenticated (options?: AuthenticatedOptions) {
                 .map((group: ActiveDirectoryGroup) => { return group.cn; }); // convert objects to strings
 
             if (!filtered.length) {
-                throw new Error('Unauthorized');
+                throw new UnauthorizedError('Unauthorized');
             }
 
             next();
