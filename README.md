@@ -95,9 +95,8 @@ import {authenticated} from 'jwt-active-directory';
 // ... your code ...
 
 app.get('*', authenticated({
-    allowed: ['Group 1', 'Antoher Group Allowed'], // list of groups allowed to enter this route
-    jwtKey: 'no-so-secret-key', // your jwt secret key
-    handleError: false // default true, middleware will stop res.end() and show error
+    allowed: ['*', 'Group 1', 'Antoher Group Allowed'], // list of groups allowed to enter this route
+    jwtKey: 'no-so-secret-key' // your jwt secret key
 }), (req, res) => {
     // your code
     // access token with **req.token**
@@ -115,8 +114,7 @@ options = {
     cookieKey: 'jwt_token',
     headerKey: 'Bearer',
     reqKey: 'token', // req.token
-    validateGroupKey: 'cn',
-    handleError: true
+    validateGroupKey: 'cn'
 };
 ```
 

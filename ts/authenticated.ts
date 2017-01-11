@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import {AuthenticatedOptions, ActiveDirectoryGroups, ActiveDirectoryGroup} from './types';
+import {JWTUndefinedError, RFC6750Error, UnauthorizedError} from './exceptions';
 
 export function authenticated (options?: AuthenticatedOptions) {
     options = <AuthenticatedOptions>Object.assign({}, {
@@ -10,8 +11,7 @@ export function authenticated (options?: AuthenticatedOptions) {
         cookieKey: 'jwt_token',
         headerKey: 'Bearer',
         reqKey: 'token',
-        validateGroupKey: 'cn',
-        handleError: true
+        validateGroupKey: 'cn'
     }, options);
 
     return (req, res, next?) => {
@@ -19,7 +19,7 @@ export function authenticated (options?: AuthenticatedOptions) {
         let error: Error;
 
         if (!options.jwtKey) {
-            error = new Error('JWT secret key undefined');
+            error = new JWTUndefinedError('JWT secret key undefined');
         }
 
         if (req.query && req.query[options.queryKey]) {
@@ -28,7 +28,7 @@ export function authenticated (options?: AuthenticatedOptions) {
 
         if (req.body && req.body[options.bodyKey]) {
             if (token) {
-                error = new Error('RFC6750 The "token" attribute MUST NOT appear more than once');
+                error = new RFC6750Error('RFC6750 The "token" attribute MUST NOT appear more than once');
             }
 
             token = req.body[options.bodyKey];
@@ -36,7 +36,7 @@ export function authenticated (options?: AuthenticatedOptions) {
 
         if (req.cookies && req.cookies[options.cookieKey]) {
             if (token) {
-                error = new Error('RFC6750 The "token" attribute MUST NOT appear more than once');
+                error = new RFC6750Error('RFC6750 The "token" attribute MUST NOT appear more than once');
             }
 
             token = req.cookies[options.cookieKey];
@@ -47,12 +47,12 @@ export function authenticated (options?: AuthenticatedOptions) {
 
             if (parts.length === 2 && parts[0] === options.headerKey) {
                 if (token) {
-                    error = new Error('RFC6750 The "token" attribute MUST NOT appear more than once');
+                    error = new RFC6750Error('RFC6750 The "token" attribute MUST NOT appear more than once');
                 }
 
                 token = parts[1];
             } else {
-                error = new Error('Authorization Bearer header could not be splitted');
+                error = new RFC6750Error('Authorization Bearer header could not be splitted');
             }
         }
 
@@ -60,11 +60,6 @@ export function authenticated (options?: AuthenticatedOptions) {
         // in more than one place in a single request.
         if (error) {
             res.status(400);
-            if (options.handleError) {
-                res.send({error: error.message});
-                res.end();
-                return;
-            }
             next(error);
             return;
         }
@@ -74,24 +69,26 @@ export function authenticated (options?: AuthenticatedOptions) {
         // Validate jwt token
         try {
             const decoded = jwt.verify(token, options.jwtKey);
-            const filtered = <ActiveDirectoryGroups> (decoded.groups || [])
+            const groups: ActiveDirectoryGroups = decoded.groups || [];
+            // if allowed all
+            if (options.allowed.indexOf('*') >= 0) {
+                groups.push(<ActiveDirectoryGroup> {
+                    [options.validateGroupKey]: '*'
+                });
+            }
+
+            const filtered = groups
                 .filter((group: ActiveDirectoryGroup) => { return options.allowed.includes(group[options.validateGroupKey]); })
                 .map((group: ActiveDirectoryGroup) => { return group.cn; }); // convert objects to strings
 
             if (!filtered.length) {
-                throw new Error('Unauthorized');
+                throw new UnauthorizedError('Unauthorized');
             }
 
             next();
             return;
         } catch(err) {
             res.status(401);
-            if (options.handleError) {
-                res.send({error: err.message});
-                res.end();
-                return;
-            }
-
             next(err);
             return;
         }
