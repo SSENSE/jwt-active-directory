@@ -95,7 +95,7 @@ import {authenticated} from 'jwt-active-directory';
 // ... your code ...
 
 app.get('*', authenticated({
-    allowed: ['Group 1', 'Antoher Group Allowed'], // list of groups allowed to enter this route
+    allowed: ['*', 'Group 1', 'Antoher Group Allowed'], // list of groups allowed to enter this route
     jwtKey: 'no-so-secret-key', // your jwt secret key
     handleError: false // default true, middleware will stop res.end() and show error
 }), (req, res) => {
