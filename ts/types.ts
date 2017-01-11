@@ -46,5 +46,4 @@ export type AuthenticatedOptions = {
     headerKey?: string;
     reqKey?: string;
     validateGroupKey?: string;
-    handleError?: boolean;
 };

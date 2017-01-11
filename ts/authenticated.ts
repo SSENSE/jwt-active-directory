@@ -11,8 +11,7 @@ export function authenticated (options?: AuthenticatedOptions) {
         cookieKey: 'jwt_token',
         headerKey: 'Bearer',
         reqKey: 'token',
-        validateGroupKey: 'cn',
-        handleError: true
+        validateGroupKey: 'cn'
     }, options);
 
     return (req, res, next?) => {
@@ -61,11 +60,6 @@ export function authenticated (options?: AuthenticatedOptions) {
         // in more than one place in a single request.
         if (error) {
             res.status(400);
-            if (options.handleError) {
-                res.send({error: error.message});
-                res.end();
-                return;
-            }
             next(error);
             return;
         }
@@ -95,12 +89,6 @@ export function authenticated (options?: AuthenticatedOptions) {
             return;
         } catch(err) {
             res.status(401);
-            if (options.handleError) {
-                res.send({error: err.message});
-                res.end();
-                return;
-            }
-
             next(err);
             return;
         }

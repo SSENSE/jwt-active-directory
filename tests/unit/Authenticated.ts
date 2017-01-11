@@ -224,55 +224,6 @@ describe('Authenticated middleware', () => {
         });
     });
 
-    it('should get res.statusCode 400 if token is sent more than once', (done) => {
-        const jwtKey: string = 'no-so-secret-key';
-        const allowed: string[] = ['Test'];
-        const groups: ActiveDirectoryGroups = [<ActiveDirectoryGroup> { cn: 'Test' }];
-        const token: string = jwt.sign({groups}, jwtKey, {expiresIn: '1 hour'});
-
-        const req = createRequest({
-            query: {
-                access_token: token
-            },
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        const res = createResponse();
-        const auth = authenticated(<AuthenticatedOptions> {
-            allowed,
-            jwtKey
-        });
-
-        auth(req, res);
-
-        expect(res.statusCode).to.equal(400);
-        done();
-    });
-
-    it('should get res.statusCode 401 if group is not found', (done) => {
-        const jwtKey: string = 'no-so-secret-key';
-        const allowed: string[] = ['Test'];
-        const groups: ActiveDirectoryGroups = [<ActiveDirectoryGroup> { cn: 'FailTest' }];
-        const token: string = jwt.sign({groups}, jwtKey, {expiresIn: '1 hour'});
-
-        const req = createRequest({
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        const res = createResponse();
-        const auth = authenticated(<AuthenticatedOptions> {
-            allowed,
-            jwtKey
-        });
-
-        auth(req, res);
-
-        expect(res.statusCode).to.equal(401);
-        done();
-    });
-
     it('should failed is token header has no whitespace after bearer', (done) => {
         const jwtKey: string = 'no-so-secret-key';
         const allowed: string[] = ['Test'];
@@ -287,8 +238,7 @@ describe('Authenticated middleware', () => {
         const res = createResponse();
         const auth = authenticated(<AuthenticatedOptions> {
             allowed,
-            jwtKey,
-            handleError: false
+            jwtKey
         });
 
         auth(req, res, (err) => {
@@ -313,8 +263,7 @@ describe('Authenticated middleware', () => {
         const res = createResponse();
         const auth = authenticated(<AuthenticatedOptions> {
             allowed,
-            jwtKey,
-            handleError: false
+            jwtKey
         });
 
         auth(req, res, () => {
@@ -341,8 +290,7 @@ describe('Authenticated middleware', () => {
         const res = createResponse();
         const auth = authenticated(<AuthenticatedOptions> {
             allowed,
-            jwtKey,
-            handleError: false
+            jwtKey
         });
 
         auth(req, res, (err) => {
@@ -368,8 +316,7 @@ describe('Authenticated middleware', () => {
         const auth = authenticated(<AuthenticatedOptions> {
             allowed,
             jwtKey,
-            cookieKey: 'custom_cookie_token',
-            handleError: false
+            cookieKey: 'custom_cookie_token'
         });
 
         auth(req, res, () => {
@@ -394,8 +341,7 @@ describe('Authenticated middleware', () => {
         const auth = authenticated(<AuthenticatedOptions> {
             allowed,
             jwtKey,
-            reqKey: 'myCustomToken',
-            handleError: false
+            reqKey: 'myCustomToken'
         });
 
         auth(req, res, () => {
@@ -420,8 +366,7 @@ describe('Authenticated middleware', () => {
         const auth = authenticated(<AuthenticatedOptions> {
             allowed,
             jwtKey,
-            reqKey: 'myCustomToken',
-            handleError: false
+            reqKey: 'myCustomToken'
         });
 
         auth(req, res, () => {
